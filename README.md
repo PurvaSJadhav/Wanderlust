@@ -2,7 +2,7 @@
 
 Welcome to Wanderlust! 🚀 This is a full-stack web application where users can list their homes for Airbnb-style rentals, leave reviews, and manage bookings seamlessly! 🔥
 
-🚀 Features
+## 🚀 Features
 
 🏠 Create, Edit, Delete Listings - List your property with ease! 📝
 
@@ -26,57 +26,19 @@ Welcome to Wanderlust! 🚀 This is a full-stack web application where users can
 
 Frontend 🎨
 
-HTML5
-
-Bootstrap 🎀
-
-CSS3
-
-JavaScript (ES6+)
-
-EJS (Embedded JavaScript) 📜
-
-Font Awesome 🎨
-
-Google Fonts ✍️
+HTML5, Bootstrap 🎀, CSS3, JavaScript (ES6+), EJS (Embedded JavaScript) 📜, Font Awesome 🎨, Google Fonts ✍️
 
 Backend 🏗️
 
-Node.js ⚡
-
-Express.js 🚀
-
-Mongoose (MongoDB ODM) 🛢️
-
-MVC Framework 🏛️
-
-EJS-Mate (Layout Engine) 🖼️
-
-Method-Override (For PUT & DELETE requests) 🔄
+Node.js ⚡, Express.js 🚀, Mongoose (MongoDB ODM) 🛢️, MVC Framework 🏛️, EJS-Mate (Layout Engine) 🖼️, Method-Override (For PUT & DELETE requests) 🔄
 
 Authentication & Security 🔐
 
-Passport.js (User Authentication) 🔑
-
-Cookie-Parser 🍪
-
-Express-Session 🗄️
-
-Connect-Flash (Flash Messages) ⚡
-
-Joi (Data Validation) ✅
+Passport.js (User Authentication) 🔑, Cookie-Parser 🍪, Express-Session 🗄️, Connect-Flash (Flash Messages) ⚡, Joi (Data Validation) ✅
 
 Storage & Hosting ☁️
 
-MongoDB Atlas (Cloud Database) 🌎
-
-Connect-Mongo (Session Storage) 🗄️
-
-Cloudinary (Image Hosting) 📸
-
-Multer & Multer-Storage-Cloudinary (File Uploads) 📂
-
-Render (Deployment) 🚀
+MongoDB Atlas (Cloud Database) 🌎, Connect-Mongo (Session Storage) 🗄️, Cloudinary (Image Hosting) 📸, Multer & Multer-Storage-Cloudinary (File Uploads) 📂, Render (Deployment) 🚀
 
 Map & Location Services 🗺️
 
@@ -98,7 +60,7 @@ Stores user reviews for listings:
 
 Manages user authentication:
 
-### 📂 MVC Architecture 🏗️
+## 📂 MVC Architecture 🏗️
 
 The project follows the Model-View-Controller (MVC) pattern:
 
@@ -108,7 +70,7 @@ View (V) - Handles UI rendering using EJS templates 🎨
 
 Controller (C) - Manages logic, routes, and database interactions 🛠️
 
-### 🎉 Get Started
+## 🎉 Get Started
 
 📥 Clone the Repo: cd wanderlust
 
