@@ -1,6 +1,6 @@
 if(process.env.NODE_ENV != "production"){
     require('dotenv').config();
-}
+};
 
 const express = require("express");
 const app = express();
@@ -31,8 +31,8 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(cookieParser());
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-// const dbURL = process.env.MONGO_ATLAS_STRING;
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbURL = process.env.MONGO_ATLAS_STRING;
 
 main()
     .then(()=>{
@@ -43,13 +43,13 @@ main()
     });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
-    // await mongoose.connect(dbURL);
+    // await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbURL);
 }
 
 const store = MongoStore.create({
-    // mongoUrl: dbURL,
-    mongoUrl: MONGO_URL,
+    mongoUrl: dbURL,
+    // mongoUrl: MONGO_URL,
     crypto:{
         secret: process.env.SECRET,
     },
@@ -71,11 +71,6 @@ const sessionOptions = {
         httpOnly: true, // for cross scripting attacks
     },
 };
-
-// root route
-// app.get("/", (req, res)=>{
-//     res.send("Hi, I am root");
-// });
 
 app.use(session(sessionOptions));
 app.use(flash());

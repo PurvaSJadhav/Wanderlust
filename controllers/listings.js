@@ -1,7 +1,6 @@
 const Listing = require("../models/listing.js");
-const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-const mapToken = process.env.MAP_TOKEN;
-const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const MAPTILER_API_KEY = process.env.MAP_API_KEY;
 
 module.exports.index = async (req, res) =>{
     const allListings = await Listing.find({});
@@ -12,39 +11,55 @@ module.exports.renderNewForm = async (req, res) =>{
     res.render("listings/new.ejs");
 };
 
-module.exports.showListings = async (req, res) =>{
-    let {id} = req.params;
+module.exports.showListings = async (req, res) => {
+    let { id } = req.params;
     const listing = await Listing.findById(id)
         .populate({
-            path: "reviews", 
-            populate: {
-                path: "author"
-        }})
+            path: "reviews",
+            populate: { path: "author" }
+        })
         .populate("owner");
-    if(!listing){
+    if (!listing) {
         req.flash("error", "Listing does not exist");
-        res.redirect("/listings");
+        return res.redirect("/listings");
     }
-    res.render("listings/show.ejs", { listing });
+    res.render("listings/show.ejs", { listing, coordinates: listing.coordinates || [0, 0] });
 };
 
-module.exports.createListing  = async (req, res, next) =>{
-    let response = await geocodingClient
-        .forwardGeocode({
-            query: req.body.listing.location,
-            limit: 1,
-        })
-        .send();
+
+module.exports.createListing = async (req, res) => {
     let url = req.file.path;
     let filename = req.file.filename;
-    const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;
-    newListing.image  = {url, filename};
-    newListing.geometry = response.body.features[0].geometry;
-    let savedListing = await newListing.save();
-    console.log(savedListing);
-    req.flash("success", "New Listing Created!");
-    res.redirect("/listings");
+
+    const { location } = req.body.listing;  // Assuming the user provides a location field
+
+    try {
+        // Geocoding to get coordinates from the location
+        const geocodeUrl = `https://api.maptiler.com/geocoding/${encodeURIComponent(location)}.json?key=${MAPTILER_API_KEY}`;
+        const response = await fetch(geocodeUrl);
+        const data = await response.json();
+
+        let coordinates = [0, 0];   // Default value in case no coordinates are found
+        if (data.features && data.features.length > 0) {
+            coordinates = data.features[0].geometry.coordinates;    // [lng, lat]
+        }
+
+        // Create the new listing
+        const newListing = new Listing(req.body.listing);
+        newListing.owner = req.user._id;
+        newListing.image = { url, filename };
+        newListing.location = location;
+        newListing.coordinates = coordinates; // Save the coordinates for map display
+
+        await newListing.save();
+
+        req.flash("success", "Successfully made a new listing with location!");
+        res.redirect("/listings");
+    } catch (err) {
+        console.error("Error during geocoding or saving listing:", err);
+        req.flash("error", "Failed to create listing. Please try again.");
+        res.redirect("/listings");
+    }
 };
 
 module.exports.renderEditForm = async (req, res)=>{

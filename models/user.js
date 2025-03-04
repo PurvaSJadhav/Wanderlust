@@ -8,7 +8,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    // passport-local-mongoose adds username, password, salt 
 });
 
 userSchema.plugin(passportLocalMongoose);
